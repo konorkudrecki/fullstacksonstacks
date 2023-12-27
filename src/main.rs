@@ -1,3 +1,17 @@
-fn main() {
-    println!("What's going on?");
+use rocket::{fs::FileServer, get, launch, routes};
+
+mod templates;
+
+#[launch]
+fn rocket() -> _ {
+    rocket::build()
+        .mount("/", routes![index])
+        .mount("/public", FileServer::from("public"))
+}
+
+#[get("/")]
+fn index() -> templates::Index {
+    templates::Index {
+        title: "Index".to_string(),
+    }
 }
